@@ -1,4 +1,4 @@
-import { expect, request, APIRequestContext, type Locator, type Page } from '@playwright/test';
+import { APIRequestContext, type Locator, type Page } from '@playwright/test';
 import ArticlesApi from '../api/articles-api'
 
 // data-testId attributes
