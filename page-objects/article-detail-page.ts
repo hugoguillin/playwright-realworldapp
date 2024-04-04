@@ -14,28 +14,43 @@ const DELETE_ARTICLE = 'delete-article'
 export default class ArticleDetailPage {
   readonly page: Page
   readonly articlesApi: ArticlesApi
+  readonly commentTextarea: Locator
+  readonly postCommentButton: Locator
+  readonly commentText: Locator
+  readonly commentAuthor: Locator
 
   constructor(page: Page, request: APIRequestContext) {
     this.page = page
     this.articlesApi = new ArticlesApi(request)
+    this.commentTextarea = page.getByTestId('comment-textarea')
+    this.postCommentButton = page.getByTestId('post-comment')
+    this.commentText = page.getByTestId('comment-content')
+    this.commentAuthor = page.getByTestId('author-username')
   }
 
   public async visit(articleIndex = 0) {
     const articles = await this.articlesApi.getArticles()
     const slug = articles[articleIndex].slug
     this.page.goto(`http://localhost:3000/#/article/${slug}`)
+    // This elements are only visible when the page is fully loaded
+    const heart = this.page.locator('.ion-heart').first()
+    await heart.waitFor({ state: 'visible', timeout: 10000 })
+    const articleBody = this.page.locator('.article-content p')
+    await articleBody.waitFor({ state: 'visible', timeout: 10000 })
   }
-  public async sendComment(comment) {
-
+  public async sendComment(comment: string) {
+    this.commentTextarea.fill(comment)
+    this.postCommentButton.click()
   }
   public async getCommentText() {
-    return await this.page.getByTestId(COMMENT_TEXTAREA)
+    return this.commentText
   }
 
   public async getCommentAuthor() {
+    return this.commentAuthor
   }
 
-  public async deleteComment(commentText) {
+  public async deleteComment(commentText: string) {
 
   }
 
