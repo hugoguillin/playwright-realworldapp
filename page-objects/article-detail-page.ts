@@ -20,7 +20,7 @@ export default class ArticleDetailPage {
     this.postCommentButton = page.getByTestId('post-comment')
     this.commentText = page.getByTestId('comment-content')
     this.commentAuthor = page.getByTestId('author-username')
-    this.articleBody = page.locator('.article-content p')
+    this.articleBody = page.getByTestId('article-content')
     this.deleteArticleButton = page.getByTestId('delete-article')
   }
 
