@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-
+import 'dotenv/config'
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -24,13 +24,10 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://127.0.0.1:3000/#/',
+    baseURL: 'http://localhost:3000/',
 
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
-
-    // Populates context with given storage state.
-    // storageState: './.auth/user.json',
+    /* Collect trace on test failure to debug easier. Available from report. See https://playwright.dev/docs/trace-viewer */
+    trace: 'retain-on-failure',
   },
 
   /* Configure projects for major browsers */

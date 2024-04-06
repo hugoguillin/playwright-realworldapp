@@ -13,4 +13,10 @@ setup('authenticate', async ({ page }) => {
 
   // End of authentication steps.
   await page.context().storageState({ path: authFile });
+
+  // Save auth token to environment variable so api requests can use it
+  const localStorage = await page.evaluate(() => localStorage.getItem('loggedUser'));
+  const loggedUser = JSON.parse(localStorage);
+  const token = loggedUser.headers.Authorization;
+  process.env.AUTH_TOKEN = token;
 });

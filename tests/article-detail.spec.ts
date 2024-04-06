@@ -1,15 +1,51 @@
-import { test, expect } from '@playwright/test';
+import { articleDetailFixture as test, expect } from './fixtures/main-fixture';
+import Utils from '../utils/utils';
 
-test.describe('Article Detail Page', () => {
+const username: string = process.env.RWAPP_USERNAME ?? ""
 
-  test('Mi test', async ({ page }) => {
-    await page.goto('http://localhost:3000/#/settings')
-    await expect(page.getByTestId('email')).toHaveValue('cypress@realworld.com')
+test.describe('Article detail tests', { tag: '@articles' }, () => {
+
+  test('Should like an article', async ({ page, articleDetail, favoritesApi, favoritesPage }) => {
+    // Arrange
+    await favoritesApi.unfavoriteArticle()
+    await articleDetail.visit()
+    const postFavorite = page.waitForResponse('**/articles/*/favorite')
+    const initialLikes = await favoritesPage.getAmountOfLikes()
+
+    // Act
+    await favoritesPage.likeArticle()
+    await postFavorite
+
+    // Assert
+    const finalLikes = await favoritesPage.getAmountOfLikes()
+    expect(finalLikes, 'Likes count').toBe(initialLikes + 1)
   });
 
-  test('Mi 2 test', async ({ page }) => {
-    await page.goto('http://localhost:3000/#/settings')
-    await expect(page.getByTestId('username')).toHaveValue('cypress-user')
+  test('Should follow an author', async ({ articleDetail, authorApi, followAuthor }) => {
+    // Arrange
+    await authorApi.unfollowAuthor()
+    await articleDetail.visit()
+
+    // Act - Assert
+    let button = await followAuthor.clickAndGetButton()
+    await expect(button, 'Follow author button').toHaveText(/\bUnfollow\b/)
+    button = await followAuthor.clickAndGetButton()
+    await expect(button, 'Follow author button').toHaveText(/\bFollow\b/)
+  });
+
+  test('Should delete an article', { tag: '@sanity' }, async ({ page, baseURL, articleDetail, articlesApi }) => {
+    // Arrange
+    let newArticle = Utils.generateNewArticleData(false);
+    const articleToDelete = await articlesApi.createNewArticle(newArticle)
+    await articleDetail.goToArticle(articleToDelete.slug)
+
+    // Act
+    await articleDetail.deleteArticle()
+
+    // Assert
+    await expect(page, 'Should go to home page').toHaveURL(baseURL + '#/')
+    const authorArticles = await articlesApi.getArticlesByAuthor(username, 1000)
+    expect(authorArticles, 'Author articles').not.toContain(articleToDelete)
   });
 
 });
