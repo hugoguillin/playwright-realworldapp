@@ -5,4 +5,5 @@ import { test as authorFixture } from "./author-fixture";
 import { test as commentsFixture } from "./comments-fixture";
 
 export const articleDetailFixture = mergeTests(articleFixture, favoritesFixture, authorFixture, commentsFixture);
+export const authorDetailFixture = mergeTests(authorFixture, articleFixture)
 export { expect } from "@playwright/test";
