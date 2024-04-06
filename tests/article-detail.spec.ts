@@ -1,10 +1,10 @@
 import { articleDetailFixture as test, expect } from './fixtures/main-fixture';
-import { faker } from "@faker-js/faker";
+import Utils from '../utils/utils';
 
-const articleIndex = 0
 const username: string = process.env.RWAPP_USERNAME ?? ""
 
-test.describe('Check features in article detail page', () => {
+test.describe('Article detail tests', { tag: '@articles' }, () => {
+
   test('Should like an article', async ({ page, articleDetail, favoritesApi, favoritesPage }) => {
     // Arrange
     await favoritesApi.unfavoriteArticle()
@@ -18,7 +18,7 @@ test.describe('Check features in article detail page', () => {
 
     // Assert
     const finalLikes = await favoritesPage.getAmountOfLikes()
-    expect(finalLikes).toBe(initialLikes + 1)
+    expect(finalLikes, 'Likes count').toBe(initialLikes + 1)
   });
 
   test('Should follow an author', async ({ articleDetail, authorApi, followAuthor }) => {
@@ -28,24 +28,24 @@ test.describe('Check features in article detail page', () => {
 
     // Act - Assert
     let button = await followAuthor.clickAndGetButton()
-    await expect(button).toHaveText(/\bUnfollow\b/)
+    await expect(button, 'Follow author button').toHaveText(/\bUnfollow\b/)
     button = await followAuthor.clickAndGetButton()
-    await expect(button).toHaveText(/\bFollow\b/)
+    await expect(button, 'Follow author button').toHaveText(/\bFollow\b/)
   });
 
-  test('Should add a comment to an article', async ({ articleDetail, commentsApi }) => {
+  test('Should delete an article', { tag: '@sanity' }, async ({ page, baseURL, articleDetail, articlesApi }) => {
     // Arrange
-    await commentsApi.deleteArticleComments(articleIndex)
-    await articleDetail.visit()
-    const message = faker.lorem.sentence();
+    let newArticle = Utils.generateNewArticleData(false);
+    const articleToDelete = await articlesApi.createNewArticle(newArticle)
+    await articleDetail.goToArticle(articleToDelete.slug)
 
     // Act
-    await articleDetail.sendComment(message)
+    await articleDetail.deleteArticle()
 
     // Assert
-    const commentText = await articleDetail.getCommentText()
-    await expect(commentText).toHaveText(message)
-    const commentAuthor = await articleDetail.getCommentAuthor()
-    await expect(commentAuthor).toHaveText(username)
+    await expect(page, 'Should go to home page').toHaveURL(baseURL + '#/')
+    const authorArticles = await articlesApi.getArticlesByAuthor(username, 1000)
+    expect(authorArticles, 'Author articles').not.toContain(articleToDelete)
   });
+
 });

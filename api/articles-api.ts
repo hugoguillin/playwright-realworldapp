@@ -18,7 +18,7 @@ export default class ArticlesApi {
    */
   public async getArticles(limit: number = 10) {
     const response = await this.request.get(`${url}/articles?limit=${limit}`)
-    expect(response.status()).toBe(200)
+    await expect(response).toBeOK()
     const body = await response.json()
     return body.articles
   }
@@ -28,11 +28,11 @@ export default class ArticlesApi {
    * @param authorName The author's username
    * @returns An array of articles
    */
-  public async getArticlesByAuthor(authorName: string) {
-    const response = await this.request.get(`${url}/articles?author=${authorName}&limit=10`, {
+  public async getArticlesByAuthor(authorName: string, limit: number = 10) {
+    const response = await this.request.get(`${url}/articles?author=${authorName}&limit=${limit}`, {
       headers: { Authorization: Utils.getToken() },
     })
-    expect(response.status()).toBe(200)
+    await expect(response).toBeOK()
     const apiResponse = await response.json()
     return apiResponse.articles
   }
@@ -46,7 +46,7 @@ export default class ArticlesApi {
     const response = await this.request.get(`${url}/articles?tag=${tagName}&limit=10`, {
       headers: { Authorization: Utils.getToken() },
     })
-    expect(response.status()).toBe(200)
+    await expect(response).toBeOK()
     const apiResponse = await response.json()
     return apiResponse.articles
   }
@@ -74,8 +74,9 @@ export default class ArticlesApi {
       headers: { Authorization: Utils.getToken() },
       data: article,
     })
-    expect(response.status()).toBe(200)
-    return await response.json()
+    await expect(response).toBeOK()
+    const body = await response.json()
+    return body.article
   }
 
 }

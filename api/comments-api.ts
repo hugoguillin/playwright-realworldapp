@@ -11,6 +11,17 @@ export default class CommentsApi {
     this.request = request
   }
 
+  public async addCommentToArticle(articleIndex: number, message: string) {
+    let slug = ''
+    const articlesResponse = await new ArticlesApi(this.request).getArticles()
+    slug = articlesResponse[articleIndex].slug
+    const response = await this.request.post(`${url}/articles/${slug}/comments`, {
+      headers: { Authorization: Utils.getToken() },
+      data: { comment: { body: message } },
+    })
+    await expect(response).toBeOK()
+  }
+
   public async deleteArticleComments(articleIndex: number) {
     let slug = ''
     const articlesResponse = await new ArticlesApi(this.request).getArticles()
@@ -20,13 +31,13 @@ export default class CommentsApi {
       const response = await this.request.delete(`${url}/articles/${slug}/comments/${comment.id}`, {
         headers: { Authorization: Utils.getToken() },
       })
-      expect(response.status()).toBe(200)
+      await expect(response).toBeOK()
     }
   }
 
   public async getArticleComments(slug: string) {
     const response = await this.request.get(`${url}/articles/${slug}/comments`)
-    expect(response.status()).toBe(200)
+    await expect(response).toBeOK()
     const body = await response.json()
     return body.comments
   }
