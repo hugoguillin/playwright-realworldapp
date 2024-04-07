@@ -1,6 +1,5 @@
-import { APIRequestContext, type Locator, type Page } from '@playwright/test';
+import { expect, APIRequestContext, type Locator, type Page } from '@playwright/test';
 import ArticlesApi from '../api/articles-api'
-import _ from 'lodash'
 
 export default class AuthorDetailPage {
   readonly page: Page
@@ -13,13 +12,17 @@ export default class AuthorDetailPage {
     this.articleTitle = page.getByTestId('article-title')
   }
 
-  public async visit() {
-    const index = _.random(0, 50)
-    console.log('Index:', index)
-    const articles = await this.articlesApi.getArticles(index)
-    const authorName = articles[index - 1].author.username
+  public async visit(index: number = 0) {
+    const articles = await this.articlesApi.getArticles(index + 1)
+    const authorName = articles[index].author.username
     const encodedAuthorName = encodeURIComponent(authorName)
     this.page.goto(`/#/profile/${encodedAuthorName}`)
+
+    // Wait for the page to load
+    const authorArticles = await this.articlesApi.getArticlesByAuthor(authorName)
+    const titlesDisplayed = await this.getArticlesTitles()
+    await expect(titlesDisplayed, 'Wait for articles to be loaded').toHaveCount(authorArticles.length, { timeout: 10000 })
+
     return authorName
   }
 

@@ -1,6 +1,5 @@
 import { expect, APIRequestContext } from "@playwright/test"
 import { NewArticle } from "../types"
-import Utils from "../utils/utils"
 
 const url = process.env.API_URL
 
@@ -29,9 +28,7 @@ export default class ArticlesApi {
    * @returns An array of articles
    */
   public async getArticlesByAuthor(authorName: string, limit: number = 10) {
-    const response = await this.request.get(`${url}/articles?author=${authorName}&limit=${limit}`, {
-      headers: { Authorization: Utils.getToken() },
-    })
+    const response = await this.request.get(`${url}/articles?author=${authorName}&limit=${limit}`)
     await expect(response).toBeOK()
     const apiResponse = await response.json()
     return apiResponse.articles
@@ -43,9 +40,7 @@ export default class ArticlesApi {
    * @returns An array of articles
    */
   public async getArticlesByTag(tagName: string) {
-    const response = await this.request.get(`${url}/articles?tag=${tagName}&limit=10`, {
-      headers: { Authorization: Utils.getToken() },
-    })
+    const response = await this.request.get(`${url}/articles?tag=${tagName}&limit=10`)
     await expect(response).toBeOK()
     const apiResponse = await response.json()
     return apiResponse.articles
@@ -58,9 +53,7 @@ export default class ArticlesApi {
   public async deleteAuthorArticles(authorName: string) {
     const authorArticles = await this.getArticlesByAuthor(authorName)
     for (const article of authorArticles) {
-      await this.request.delete(`${url}/articles${article.slug}`, {
-        headers: { Authorization: Utils.getToken() },
-      })
+      await this.request.delete(`${url}/articles${article.slug}`)
     }
   }
 
@@ -71,7 +64,6 @@ export default class ArticlesApi {
    */
   public async createNewArticle(article: NewArticle) {
     const response = await this.request.post(`${url}/articles`, {
-      headers: { Authorization: Utils.getToken() },
       data: article,
     })
     await expect(response).toBeOK()
