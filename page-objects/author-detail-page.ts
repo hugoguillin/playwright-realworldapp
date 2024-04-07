@@ -1,5 +1,6 @@
 import { APIRequestContext, type Locator, type Page } from '@playwright/test';
 import ArticlesApi from '../api/articles-api'
+import _ from 'lodash'
 
 export default class AuthorDetailPage {
   readonly page: Page
@@ -13,8 +14,10 @@ export default class AuthorDetailPage {
   }
 
   public async visit() {
-    const articles = await this.articlesApi.getArticles(100)
-    const authorName = articles[15].author.username
+    const index = _.random(0, 50)
+    console.log('Index:', index)
+    const articles = await this.articlesApi.getArticles(index)
+    const authorName = articles[index - 1].author.username
     const encodedAuthorName = encodeURIComponent(authorName)
     this.page.goto(`/#/profile/${encodedAuthorName}`)
     return authorName
