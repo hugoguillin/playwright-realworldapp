@@ -26,6 +26,8 @@ export default class FavoritesPage {
   }
 
   public async likeArticle(index = 0) {
+    const postFavorite = this.page.waitForResponse('**/articles/*/favorite')
     await this.favButton.nth(index).click()
+    await postFavorite
   }
 }

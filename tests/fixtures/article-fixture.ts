@@ -1,10 +1,14 @@
 import { test as base } from '@playwright/test';
 import ArticlesApi from '../../api/articles-api';
 import ArticleDetailPage from '../../page-objects/article-detail-page';
+import ArticlesFeedPage from '../../page-objects/common/articles-feed-page';
+import GlobalFeedPage from '../../page-objects/global-feed-page';
 
 type ArticleFixture = {
   articlesApi: ArticlesApi
   articleDetail: ArticleDetailPage
+  articlesFeed: ArticlesFeedPage
+  globalFeed: GlobalFeedPage
 }
 
 export const test = base.extend<ArticleFixture>({
@@ -15,5 +19,13 @@ export const test = base.extend<ArticleFixture>({
   articleDetail: async ({ page, request }, use) => {
     const articleDetail = new ArticleDetailPage(page, request)
     await use(articleDetail)
+  },
+  articlesFeed: async ({ page }, use) => {
+    const articleFeed = new ArticlesFeedPage(page)
+    await use(articleFeed)
+  },
+  globalFeed: async ({ page }, use) => {
+    const globalFeed = new GlobalFeedPage(page)
+    await use(globalFeed)
   }
 })

@@ -1,6 +1,5 @@
 import { expect, APIRequestContext } from "@playwright/test"
 import ArticlesApi from "./articles-api";
-import Utils from "../utils/utils";
 
 const url = process.env.API_URL
 const username: string = process.env.RWAPP_USERNAME ?? ""
@@ -19,7 +18,7 @@ export default class FavoritesApi {
    */
   public async getUserFavorites(username: string) {
     const response = await this.request.get(`${url}/articles?favorited=${username}&limit=10`)
-    expect(response.status()).toBe(200)
+    expect(response).toBeOK()
     const body = await response.json()
     return body.articles
   }
@@ -43,10 +42,8 @@ export default class FavoritesApi {
     }
     // Unfavorite the article if it is already favorited
     if (finalSlug !== '') {
-      const response = await this.request.delete(`${url}/articles/${slug}/favorite`, {
-        headers: { Authorization: Utils.getToken() },
-      })
-      expect(response.status()).toBe(200)
+      const response = await this.request.delete(`${url}/articles/${slug}/favorite`)
+      expect(response).toBeOK()
     }
   }
 }
