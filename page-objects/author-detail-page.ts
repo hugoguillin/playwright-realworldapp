@@ -1,15 +1,16 @@
 import { expect, APIRequestContext, type Locator, type Page } from '@playwright/test';
 import ArticlesApi from '../api/articles-api'
+import ArticlesFeedPage from './common/articles-feed-page';
 
 export default class AuthorDetailPage {
   readonly page: Page
   readonly articlesApi: ArticlesApi
-  readonly articleTitle: Locator
+  readonly articlesFeed: ArticlesFeedPage
 
   constructor(page: Page, request: APIRequestContext) {
     this.page = page
     this.articlesApi = new ArticlesApi(request)
-    this.articleTitle = page.getByTestId('article-title')
+    this.articlesFeed = new ArticlesFeedPage(page)
   }
 
   public async visit(index: number = 0) {
@@ -20,14 +21,10 @@ export default class AuthorDetailPage {
 
     // Wait for the page to load
     const authorArticles = await this.articlesApi.getArticlesByAuthor(authorName)
-    const titlesDisplayed = await this.getArticlesTitles()
+    const titlesDisplayed = await this.articlesFeed.getArticlesTitles()
     await expect(titlesDisplayed, 'Wait for articles to be loaded').toHaveCount(authorArticles.length, { timeout: 10000 })
 
     return authorName
-  }
-
-  public async getArticlesTitles() {
-    return this.articleTitle
   }
 
   public async showFavoritedArticles() {

@@ -8,11 +8,11 @@ test.describe('Author detail tests', { tag: '@author' }, () => {
     articleIndex = _.random(0, 50) // Let's pick a random article to test
   })
 
-  test('Should display author articles', async ({ authorDetail, articlesApi }) => {
+  test('Should display author articles', async ({ authorDetail, articlesApi, articlesFeed }) => {
     // Arrange
     const authorName = await authorDetail.visit(articleIndex)
     const authorArticles = await articlesApi.getArticlesByAuthor(authorName)
-    const titlesDisplayed = await authorDetail.getArticlesTitles()
+    const titlesDisplayed = await articlesFeed.getArticlesTitles()
 
     // Act
     const titlesText = await titlesDisplayed.allInnerTexts()
@@ -21,7 +21,7 @@ test.describe('Author detail tests', { tag: '@author' }, () => {
     expect(titlesText, 'All author articles are displayed').toEqual(authorArticles.map(article => article.title))
   });
 
-  test('Should display favorited articles', async ({ page, authorDetail }) => {
+  test('Should display favorited articles', async ({ page, authorDetail, articlesFeed }) => {
     // Arrange - Mocking the API response to return a fixed set of articles
     const mockedData = JSON.parse(fs.readFileSync('./mocks/mocked-articles.json', 'utf8'))
     await page.route('**/articles?favorited=**', async route => {
@@ -37,7 +37,7 @@ test.describe('Author detail tests', { tag: '@author' }, () => {
     await authorDetail.showFavoritedArticles()
 
     // Assert
-    const articles = await authorDetail.getArticlesTitles()
+    const articles = await articlesFeed.getArticlesTitles()
     await expect(articles, 'Wait for favorited articles to be loaded').toHaveCount(mockedData.articles.length)
   });
 

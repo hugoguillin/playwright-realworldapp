@@ -5,16 +5,14 @@ const username: string = process.env.RWAPP_USERNAME ?? ""
 
 test.describe('Article detail tests', { tag: '@articles' }, () => {
 
-  test('Should like an article', async ({ page, articleDetail, favoritesApi, favoritesPage }) => {
+  test('Should like an article', async ({ articleDetail, favoritesApi, favoritesPage }) => {
     // Arrange
     await favoritesApi.unfavoriteArticle()
     await articleDetail.visit()
-    const postFavorite = page.waitForResponse('**/articles/*/favorite')
     const initialLikes = await favoritesPage.getAmountOfLikes()
 
     // Act
     await favoritesPage.likeArticle()
-    await postFavorite
 
     // Assert
     const finalLikes = await favoritesPage.getAmountOfLikes()
