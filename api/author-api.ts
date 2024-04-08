@@ -1,6 +1,5 @@
 import { expect, APIRequestContext } from "@playwright/test"
 import ArticlesApi from "./articles-api";
-import { ar } from "@faker-js/faker";
 
 const url = process.env.API_URL
 
