@@ -1,4 +1,4 @@
-import { expect, APIRequestContext, type Locator, type Page } from '@playwright/test';
+import { expect, APIRequestContext, type Page } from '@playwright/test';
 import ArticlesApi from '../api/articles-api'
 import ArticlesFeedPage from './common/articles-feed-page';
 
