@@ -83,4 +83,27 @@ test.describe('User settings tests', { tag: '@settings' }, () => {
     const updatedUserData = await usersApi.getUser(userWithNewEmail)
     expect(updatedUserData.user.email).toBe(fieldsToUpdate.email)
   });
+
+  test('Should update user password', async ({ page, userSettings, usersApi }) => {
+    // Arrange
+    const userUpdate = page.waitForResponse('**/api/user')
+    const userWithNewPassword: NewUser = {
+      user: {
+        email: newUserData.user.email,
+        password: fieldsToUpdate.password,
+        username: newUserData.user.username
+      }
+    }
+
+    // Act
+    userSettings.updateField(UserSettingsFields.password, fieldsToUpdate.password)
+    userSettings.submit()
+    await userUpdate
+
+    // Assert - If getUser request works, it means the user password was updated ok
+    const updatedUserData = await usersApi.getUser(userWithNewPassword)
+    expect(updatedUserData.user.email).toBe(newUserData.user.email)
+    // If this assertion works ok in a real application, it would be a security risk
+    await expect(page.getByTestId(UserSettingsFields.password)).toHaveValue(fieldsToUpdate.password)
+  });
 });
