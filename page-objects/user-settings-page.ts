@@ -31,13 +31,13 @@ export default class UserSettingsPage {
 
   public async updateField(fieldName: string, value: string) {
     const field = this.page.getByTestId(fieldName)
-    field.fill(value)
+    await field.fill(value)
   }
 
   public async updateAllFields(userSettings: UserSettings) {
     for (const field in userSettings) {
       if (userSettings[field]) {
-        this.updateField(field, userSettings[field])
+        await this.updateField(UserSettingsFields[field], userSettings[field])
       }
     }
   }

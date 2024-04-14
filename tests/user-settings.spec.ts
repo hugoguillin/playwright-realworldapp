@@ -6,6 +6,7 @@ import { UserSettingsFields } from "../page-objects/user-settings-page";
 // Each of these tests need a new user, so we need to discard the previous storage
 // state and extraHTTPHeaders to start with a clean slate
 test.use({ storageState: { cookies: [], origins: [] }, extraHTTPHeaders: {} });
+test.describe.configure({ mode: 'serial' })
 test.describe('User settings tests', { tag: '@settings' }, () => {
   let fieldsToUpdate: UserSettings
   let newUserData: NewUser
@@ -20,8 +21,8 @@ test.describe('User settings tests', { tag: '@settings' }, () => {
 
   test('Should update profile picture', async ({ userSettings }) => {
     // Act
-    userSettings.updateField(UserSettingsFields.image, fieldsToUpdate.image)
-    userSettings.submit()
+    await userSettings.updateField(UserSettingsFields.image, fieldsToUpdate.image)
+    await userSettings.submit()
 
     // Assert
     await expect(userSettings.userPic).toHaveAttribute('src', fieldsToUpdate.image)
@@ -32,8 +33,8 @@ test.describe('User settings tests', { tag: '@settings' }, () => {
     const userUpdate = page.waitForResponse('**/api/user')
 
     // Act
-    userSettings.updateField(UserSettingsFields.username, fieldsToUpdate.username)
-    userSettings.submit()
+    await userSettings.updateField(UserSettingsFields.username, fieldsToUpdate.username)
+    await userSettings.submit()
     await userUpdate
 
     // Assert
@@ -50,8 +51,8 @@ test.describe('User settings tests', { tag: '@settings' }, () => {
     const userUpdate = page.waitForResponse('**/api/user')
 
     // Act
-    userSettings.updateField(UserSettingsFields.bio, fieldsToUpdate.bio)
-    userSettings.submit()
+    await userSettings.updateField(UserSettingsFields.bio, fieldsToUpdate.bio)
+    await userSettings.submit()
     await userUpdate
 
     // Assert
@@ -73,8 +74,8 @@ test.describe('User settings tests', { tag: '@settings' }, () => {
     }
 
     // Act
-    userSettings.updateField(UserSettingsFields.email, fieldsToUpdate.email)
-    userSettings.submit()
+    await userSettings.updateField(UserSettingsFields.email, fieldsToUpdate.email)
+    await userSettings.submit()
     await userUpdate
 
     // Assert
@@ -96,8 +97,8 @@ test.describe('User settings tests', { tag: '@settings' }, () => {
     }
 
     // Act
-    userSettings.updateField(UserSettingsFields.password, fieldsToUpdate.password)
-    userSettings.submit()
+    await userSettings.updateField(UserSettingsFields.password, fieldsToUpdate.password)
+    await userSettings.submit()
     await userUpdate
 
     // Assert - If getUser request works, it means the user password was updated ok
@@ -105,5 +106,35 @@ test.describe('User settings tests', { tag: '@settings' }, () => {
     expect(updatedUserData.user.email).toBe(newUserData.user.email)
     // If this assertion works ok in a real application, it would be a security risk
     await expect(page.getByTestId(UserSettingsFields.password)).toHaveValue(fieldsToUpdate.password)
+  });
+
+  test('Should update all fields at once', async ({ page, userSettings, usersApi }) => {
+    // Arrange
+    const userUpdate = page.waitForResponse('**/api/user')
+    const userWithNewData: NewUser = {
+      user: {
+        email: fieldsToUpdate.email,
+        password: fieldsToUpdate.password,
+        username: fieldsToUpdate.username
+      }
+    }
+
+    // Act
+    await userSettings.updateAllFields(fieldsToUpdate)
+    await userSettings.submit()
+    await userUpdate
+
+    // Assert
+    await expect(userSettings.userPic).toHaveAttribute('src', fieldsToUpdate.image)
+    await expect(page.getByTestId(UserSettingsFields.username)).toHaveValue(fieldsToUpdate.username)
+    await expect(page.getByTestId(UserSettingsFields.bio)).toHaveText(fieldsToUpdate.bio)
+    await expect(page.getByTestId(UserSettingsFields.email)).toHaveValue(fieldsToUpdate.email)
+    await expect(page.getByTestId(UserSettingsFields.password)).toHaveValue(fieldsToUpdate.password)
+
+    const updatedUserData = await usersApi.getUser(userWithNewData)
+    for (const field in fieldsToUpdate) {
+      if (field === 'password') continue
+      expect(updatedUserData.user[field]).toBe(fieldsToUpdate[field])
+    }
   });
 });
