@@ -8,7 +8,7 @@ test.describe('Global feed tests', { tag: '@articles' }, () => {
 
     // Act
     const expectedArticles = await articlesApi.getArticles()
-    const actualArticles = await articlesFeed.getArticlesTitles()
+    const actualArticles = articlesFeed.articleTitle
     const titlesText = await actualArticles.allInnerTexts()
 
     // Assert

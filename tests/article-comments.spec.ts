@@ -18,9 +18,9 @@ test.describe('Article comments tests', { tag: ['@sanity', '@comments'] }, () =>
     await articleDetail.sendComment(message)
 
     // Assert
-    const commentText = (await articleDetail.getCommentText())
+    const commentText = articleDetail.commentText
     await expect(commentText, 'Comment content').toHaveText(message)
-    const commentAuthor = (await articleDetail.getCommentAuthor())
+    const commentAuthor = articleDetail.commentAuthor
     await expect(commentAuthor, 'Comment author').toHaveText(username)
   });
 
@@ -29,7 +29,7 @@ test.describe('Article comments tests', { tag: ['@sanity', '@comments'] }, () =>
     const comment = faker.lorem.sentence();
     await commentsApi.addCommentToArticle(articleIndex, comment)
     await articleDetail.visit()
-    const commentText = await articleDetail.getCommentText()
+    const commentText = articleDetail.commentText
     expect(await commentText.count(), 'Number of comments for the article').toBeGreaterThan(0)
 
     // Act

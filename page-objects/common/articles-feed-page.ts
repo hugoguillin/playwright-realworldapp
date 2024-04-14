@@ -8,8 +8,4 @@ export default class ArticlesFeedPage {
     this.page = page
     this.articleTitle = page.getByTestId('article-title')
   }
-
-  public async getArticlesTitles() {
-    return this.articleTitle
-  }
 }
