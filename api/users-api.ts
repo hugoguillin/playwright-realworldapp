@@ -15,20 +15,25 @@ export default class UsersApi {
    * Perform login first, in case user data was updated
    * @returns A user object containing the user data
    */
-  public async getUser(email: string, password: string): Promise<User> {
+  public async getUser(userData: NewUser): Promise<User> {
     const loginResponse = await this.request.post(`${url}/users/login`, {
       data: {
         user: {
-          email,
-          password
+          email: userData.user.email,
+          password: userData.user.password
         }
       }
     })
     expect(loginResponse).toBeOK()
+    const loginBody = await loginResponse.json()
 
-    const userData = await this.request.get(`${url}/user`)
-    expect(userData).toBeOK()
-    return await userData.json()
+    const userResponse = await this.request.get(`${url}/user`, {
+      headers: {
+        Authorization: `Token ${loginBody.user.token}`
+      }
+    })
+    expect(userResponse).toBeOK()
+    return await userResponse.json()
   }
 
   public async registerNewUser(userData: NewUser): Promise<User> {

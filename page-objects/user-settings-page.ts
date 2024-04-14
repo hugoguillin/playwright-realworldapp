@@ -29,10 +29,6 @@ export default class UserSettingsPage {
     await expect(this.page.getByText('Your Settings')).toBeVisible();
   }
 
-  public async getFormField(fieldName: string) {
-    return this.page.getByTestId(fieldName)
-  }
-
   public async updateField(fieldName: string, value: string) {
     const field = this.page.getByTestId(fieldName)
     field.fill(value)

@@ -27,4 +27,21 @@ test.describe('User settings tests', { tag: '@settings' }, () => {
     await expect(userSettings.userPic).toHaveAttribute('src', fieldsToUpdate.image)
   });
 
+  test('Should update username', async ({ page, userSettings, usersApi }) => {
+    // Arrange
+    const userUpdate = page.waitForResponse('**/api/user')
+
+    // Act
+    userSettings.updateField(UserSettingsFields.username, fieldsToUpdate.username)
+    userSettings.submit()
+    await userUpdate
+
+    // Assert
+    await expect(page.getByTestId(UserSettingsFields.username)).toHaveValue(fieldsToUpdate.username)
+    // The parent element of the userPic locator is the one that contains the username
+    await expect(userSettings.userPic.locator('..')).toHaveText(fieldsToUpdate.username)
+
+    const updatedUserData = await usersApi.getUser(newUserData)
+    expect(updatedUserData.user.username).toBe(fieldsToUpdate.username)
+  });
 });
