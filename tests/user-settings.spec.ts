@@ -44,4 +44,20 @@ test.describe('User settings tests', { tag: '@settings' }, () => {
     const updatedUserData = await usersApi.getUser(newUserData)
     expect(updatedUserData.user.username).toBe(fieldsToUpdate.username)
   });
+
+  test('Should update user bio', async ({ page, userSettings, usersApi }) => {
+    // Arrange
+    const userUpdate = page.waitForResponse('**/api/user')
+
+    // Act
+    userSettings.updateField(UserSettingsFields.bio, fieldsToUpdate.bio)
+    userSettings.submit()
+    await userUpdate
+
+    // Assert
+    await expect(page.getByTestId(UserSettingsFields.bio)).toHaveText(fieldsToUpdate.bio)
+
+    const updatedUserData = await usersApi.getUser(newUserData)
+    expect(updatedUserData.user.bio).toBe(fieldsToUpdate.bio)
+  });
 });
