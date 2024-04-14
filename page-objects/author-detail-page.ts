@@ -21,7 +21,7 @@ export default class AuthorDetailPage {
 
     // Wait for the page to load
     const authorArticles = await this.articlesApi.getArticlesByAuthor(authorName)
-    const titlesDisplayed = await this.articlesFeed.getArticlesTitles()
+    const titlesDisplayed = await this.articlesFeed.articleTitle
     await expect(titlesDisplayed, 'Wait for articles to be loaded').toHaveCount(authorArticles.length, { timeout: 10000 })
 
     return authorName

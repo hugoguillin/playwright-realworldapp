@@ -36,6 +36,11 @@ export default class UsersApi {
     return await userResponse.json()
   }
 
+  /**
+   * Register a new user in the application
+   * @param userData - The user data to register
+   * @returns A user object containing the user profile
+   */
   public async registerNewUser(userData: NewUser): Promise<User> {
     const response = await this.request.post(`${url}/users`, {
       data: {

@@ -43,13 +43,6 @@ export default class ArticleDetailPage {
     this.commentTextarea.fill(comment)
     this.postCommentButton.click()
   }
-  public async getCommentText() {
-    return this.commentText
-  }
-
-  public async getCommentAuthor() {
-    return this.commentAuthor
-  }
 
   public async deleteComment(commentText: string) {
     const comment = this.commentCard.filter({ hasText: commentText })

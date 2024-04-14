@@ -12,7 +12,7 @@ test.describe('Author detail tests', { tag: '@author' }, () => {
     // Arrange
     const authorName = await authorDetail.visit(articleIndex)
     const authorArticles = await articlesApi.getArticlesByAuthor(authorName)
-    const titlesDisplayed = await articlesFeed.getArticlesTitles()
+    const titlesDisplayed = await articlesFeed.articleTitle
 
     // Act
     const titlesText = await titlesDisplayed.allInnerTexts()
@@ -37,7 +37,7 @@ test.describe('Author detail tests', { tag: '@author' }, () => {
     await authorDetail.showFavoritedArticles()
 
     // Assert
-    const articles = await articlesFeed.getArticlesTitles()
+    const articles = articlesFeed.articleTitle
     await expect(articles, 'Wait for favorited articles to be loaded').toHaveCount(mockedData.articles.length)
   });
 
