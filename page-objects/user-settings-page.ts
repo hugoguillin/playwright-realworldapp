@@ -1,4 +1,5 @@
-import { APIRequestContext, type Locator, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
+import { UserSettings } from '../types';
 
 export const UserSettingsFields = {
   image: 'profile-image',
@@ -6,14 +7,6 @@ export const UserSettingsFields = {
   bio: 'bio',
   email: 'email',
   password: 'password'
-}
-
-export type UserSettings = {
-  image?: string,
-  username?: string,
-  bio?: string,
-  email?: string,
-  password?: string
 }
 
 export default class UserSettingsPage {
@@ -33,7 +26,7 @@ export default class UserSettingsPage {
 
   public async visit() {
     this.page.goto('/#/settings')
-    await this.page.getByText('Your Settings').waitFor({ state: 'visible' })
+    await expect(this.page.getByText('Your Settings')).toBeVisible();
   }
 
   public async getFormField(fieldName: string) {

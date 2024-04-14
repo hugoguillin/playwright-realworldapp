@@ -10,7 +10,12 @@ export default class UsersApi {
     this.request = request
   }
 
-  public async getUser(email: string, password: string) {
+  /**
+   * Get current user data.
+   * Perform login first, in case user data was updated
+   * @returns A user object containing the user data
+   */
+  public async getUser(email: string, password: string): Promise<User> {
     const loginResponse = await this.request.post(`${url}/users/login`, {
       data: {
         user: {
@@ -23,18 +28,16 @@ export default class UsersApi {
 
     const userData = await this.request.get(`${url}/user`)
     expect(userData).toBeOK()
-    const body: User = await userData.json()
-    return body.user
+    return await userData.json()
   }
 
-  public async registerNewUser(user: NewUser) {
+  public async registerNewUser(userData: NewUser): Promise<User> {
     const response = await this.request.post(`${url}/users`, {
       data: {
-        user
+        user: userData.user
       }
     })
     expect(response).toBeOK()
-    const body: User = await response.json()
-    return body.user
+    return await response.json()
   }
 }

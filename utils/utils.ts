@@ -1,7 +1,8 @@
 import { faker } from "@faker-js/faker";
+import { NewUser, NewArticle, UserSettings } from "../types";
 
 export default class Utils {
-  public static getToken() {
+  public static getToken(): string {
     const authToken = process.env.AUTH_TOKEN;
     if (authToken) {
       return authToken
@@ -10,7 +11,7 @@ export default class Utils {
     }
   }
 
-  public static generateNewArticleData(includeTags = true) {
+  public static generateNewArticleData(includeTags = true): NewArticle {
     let tagList: string[] = []
     if (includeTags) {
       tagList = [faker.lorem.word(), faker.lorem.word()]
@@ -22,6 +23,26 @@ export default class Utils {
         body: `${faker.lorem.paragraphs(2)}`,
         tagList: tagList
       }
+    }
+  }
+
+  public static generateNewUserData(): NewUser {
+    return {
+      user: {
+        username: `${faker.internet.userName()}`,
+        email: `${faker.internet.email()}`,
+        password: `${faker.internet.password()}`
+      }
+    }
+  }
+
+  public static generateUserSettingsData(): UserSettings {
+    return {
+      image: faker.image.avatar(),
+      username: faker.internet.userName(),
+      bio: faker.lorem.sentence(),
+      email: faker.internet.email(),
+      password: faker.internet.password()
     }
   }
 }

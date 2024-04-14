@@ -18,7 +18,17 @@ export interface User {
 }
 
 export interface NewUser {
+  user: {
+    username: string
+    email: string
+    password: string
+  }
+}
+
+export interface UserSettings {
+  image: string
   username: string
+  bio: string
   email: string
   password: string
 }

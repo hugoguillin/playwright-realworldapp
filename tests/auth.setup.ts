@@ -20,3 +20,40 @@ setup('authenticate', async ({ page }) => {
   const token = loggedUser.headers.Authorization;
   process.env.AUTH_TOKEN = token;
 });
+
+// setup('authenticate via api', async ({ request }) => {
+//   const response = await request.post('http://localhost:3001/api/users/login', {
+//     data: {
+//       "user": {
+//         "email": "cypress@realworld.com",
+//         "password": "cypress@realworld.com"
+//       }
+//     }
+//   })
+
+//   const res = await response.json()
+//   const loggedUser = {
+//     cookies: [],
+//     origins: [
+//       {
+//         origin: "http://localhost:3000",
+//         localStorage: [
+//           {
+//             name: "loggedUser",
+//             value: {
+//               headers: {
+//                 Authorization: `Token ${res.user.token}`
+//               },
+//               isAuth: true,
+//               loggedUser: res.user
+//             }
+//           }
+//         ]
+//       }
+//     ]
+//   }
+//   // await request.storageState({ path: authFile });
+//   await fs.writeFile(authFile, JSON.stringify(loggedUser, null, 2));
+//   const t = res.user.token;
+//   process.env.AUTH_TOKEN = `Token ${res.user.token}`;
+// });
