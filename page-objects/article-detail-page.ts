@@ -12,6 +12,7 @@ export default class ArticleDetailPage {
   readonly articleBody: Locator
   readonly articleTag: Locator
   readonly deleteArticleButton: Locator
+  readonly editArticleButton: Locator
   readonly heartIcon: Locator
 
   constructor(page: Page, request: APIRequestContext) {
@@ -25,6 +26,7 @@ export default class ArticleDetailPage {
     this.articleBody = page.getByTestId('article-content').locator('p')
     this.articleTag = page.getByTestId('article-tag')
     this.deleteArticleButton = page.getByTestId('delete-article')
+    this.editArticleButton = page.getByTestId('edit-article').first()
     this.heartIcon = page.locator('.ion-heart')
   }
 
