@@ -1,4 +1,4 @@
-import { APIRequestContext, type Locator, type Page } from '@playwright/test';
+import { APIRequestContext, expect, type Locator, type Page } from '@playwright/test';
 import ArticlesApi from '../api/articles-api'
 
 export default class ArticleDetailPage {
@@ -10,6 +10,7 @@ export default class ArticleDetailPage {
   readonly commentText: Locator
   readonly commentAuthor: Locator
   readonly articleBody: Locator
+  readonly articleTag: Locator
   readonly deleteArticleButton: Locator
   readonly heartIcon: Locator
 
@@ -21,7 +22,8 @@ export default class ArticleDetailPage {
     this.postCommentButton = page.getByTestId('post-comment')
     this.commentText = page.getByTestId('comment-content')
     this.commentAuthor = page.getByTestId('author-username')
-    this.articleBody = page.getByTestId('article-content')
+    this.articleBody = page.getByTestId('article-content').locator('p')
+    this.articleTag = page.getByTestId('article-tag')
     this.deleteArticleButton = page.getByTestId('delete-article')
     this.heartIcon = page.locator('.ion-heart')
   }
@@ -31,7 +33,7 @@ export default class ArticleDetailPage {
     const slug = articles[articleIndex].slug
     this.page.goto(`/#/article/${slug}`)
     await this.heartIcon.first().waitFor({ state: 'visible', timeout: 10000 })
-    await this.articleBody.locator('p').waitFor({ state: 'visible', timeout: 10000 })
+    await this.articleBody.waitFor({ state: 'visible', timeout: 10000 })
   }
 
   public async goToArticle(slug: string) {
@@ -58,5 +60,10 @@ export default class ArticleDetailPage {
     this.page.on('dialog', dialog => dialog.accept());
     this.deleteArticleButton.first().click()
     await requestPromise;
+  }
+
+  public async getTags() {
+    await expect(this.articleTag.first()).toBeVisible()
+    return this.articleTag.allInnerTexts()
   }
 }
