@@ -7,7 +7,7 @@ import { UserSettingsFields } from "../page-objects/user-settings-page";
 // state and extraHTTPHeaders to start with a clean slate
 test.use({ storageState: { cookies: [], origins: [] }, extraHTTPHeaders: {} });
 test.describe.configure({ mode: 'serial' })
-test.describe('User settings tests', { tag: '@settings' }, () => {
+test.describe('User settings tests', { tag: '@user' }, () => {
   let fieldsToUpdate: UserSettings
   let newUserData: NewUser
 
@@ -62,7 +62,7 @@ test.describe('User settings tests', { tag: '@settings' }, () => {
     expect(updatedUserData.user.bio).toBe(fieldsToUpdate.bio)
   });
 
-  test('Should update user email', async ({ page, userSettings, usersApi }) => {
+  test('Should update user email', { tag: "@sanity" }, async ({ page, userSettings, usersApi }) => {
     // Arrange
     const userUpdate = page.waitForResponse('**/api/user')
     const userWithNewEmail: NewUser = {
@@ -85,7 +85,7 @@ test.describe('User settings tests', { tag: '@settings' }, () => {
     expect(updatedUserData.user.email).toBe(fieldsToUpdate.email)
   });
 
-  test('Should update user password', async ({ page, userSettings, usersApi }) => {
+  test('Should update user password', { tag: "@sanity" }, async ({ page, userSettings, usersApi }) => {
     // Arrange
     const userUpdate = page.waitForResponse('**/api/user')
     const userWithNewPassword: NewUser = {
