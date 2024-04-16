@@ -47,6 +47,7 @@ export default class UserSettingsPage {
   }
 
   public async logout() {
+    this.userPic.click()
     this.logoutButton.click()
   }
 }
