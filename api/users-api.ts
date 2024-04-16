@@ -1,5 +1,5 @@
 import { expect, APIRequestContext } from "@playwright/test"
-import { User, NewUser } from "../types"
+import { UserProfile, User } from "../types"
 
 const url = process.env.API_URL
 
@@ -15,7 +15,7 @@ export default class UsersApi {
    * Perform login first, in case user data was updated
    * @returns A user object containing the user data
    */
-  public async getUser(userData: NewUser): Promise<User> {
+  public async getUser(userData: User): Promise<UserProfile> {
     const loginResponse = await this.request.post(`${url}/users/login`, {
       data: {
         user: {
@@ -41,7 +41,7 @@ export default class UsersApi {
    * @param userData - The user data to register
    * @returns A user object containing the user profile
    */
-  public async registerNewUser(userData: NewUser): Promise<User> {
+  public async registerNewUser(userData: User): Promise<UserProfile> {
     const response = await this.request.post(`${url}/users`, {
       data: {
         user: userData.user

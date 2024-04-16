@@ -1,6 +1,6 @@
 import { userFixture as test, expect } from "./fixtures/main-fixture";
 import Utils from "../utils/utils";
-import { NewUser, User, UserSettings } from "../types";
+import { User, UserProfile, UserSettings } from "../types";
 import { UserSettingsFields } from "../page-objects/user-settings-page";
 
 // Each of these tests need a new user, so we need to discard the previous storage
@@ -9,11 +9,11 @@ test.use({ storageState: { cookies: [], origins: [] }, extraHTTPHeaders: {} });
 test.describe.configure({ mode: 'serial' })
 test.describe('User settings tests', { tag: '@user' }, () => {
   let fieldsToUpdate: UserSettings
-  let newUserData: NewUser
+  let newUserData: User
 
   test.beforeEach(async ({ userSettings, usersApi, loginPage }) => {
     newUserData = Utils.generateNewUserData()
-    const user: User = await usersApi.registerNewUser(newUserData)
+    const user: UserProfile = await usersApi.registerNewUser(newUserData)
     fieldsToUpdate = Utils.generateUserSettingsData()
     await loginPage.login(newUserData.user.email, newUserData.user.password)
     await userSettings.visit()
@@ -65,7 +65,7 @@ test.describe('User settings tests', { tag: '@user' }, () => {
   test('Should update user email', { tag: "@sanity" }, async ({ page, userSettings, usersApi }) => {
     // Arrange
     const userUpdate = page.waitForResponse('**/api/user')
-    const userWithNewEmail: NewUser = {
+    const userWithNewEmail: User = {
       user: {
         email: fieldsToUpdate.email,
         password: newUserData.user.password,
@@ -88,7 +88,7 @@ test.describe('User settings tests', { tag: '@user' }, () => {
   test('Should update user password', { tag: "@sanity" }, async ({ page, userSettings, usersApi }) => {
     // Arrange
     const userUpdate = page.waitForResponse('**/api/user')
-    const userWithNewPassword: NewUser = {
+    const userWithNewPassword: User = {
       user: {
         email: newUserData.user.email,
         password: fieldsToUpdate.password,
@@ -111,7 +111,7 @@ test.describe('User settings tests', { tag: '@user' }, () => {
   test('Should update all fields at once', async ({ page, userSettings, usersApi }) => {
     // Arrange
     const userUpdate = page.waitForResponse('**/api/user')
-    const userWithNewData: NewUser = {
+    const userWithNewData: User = {
       user: {
         email: fieldsToUpdate.email,
         password: fieldsToUpdate.password,
