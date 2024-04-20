@@ -7,7 +7,7 @@ export interface NewArticle {
   }
 }
 
-export interface User {
+export interface UserProfile {
   user: {
     username: string
     bio: string
@@ -17,7 +17,7 @@ export interface User {
   }
 }
 
-export interface NewUser {
+export interface User {
   user: {
     username: string
     email: string

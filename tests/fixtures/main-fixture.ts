@@ -6,9 +6,10 @@ import { test as commentsFixture } from "./comments-fixture";
 import { test as usersFixture } from "./users-fixture";
 import { test as loginFixture } from "./login-fixture";
 import { test as newArticleFixture } from "./new-article-fixture";
+import { test as signUpFixture } from "./signup-fixture";
 
 export const articleDetailFixture = mergeTests(articleFixture, favoritesFixture, authorFixture, commentsFixture, newArticleFixture);
 export const authorDetailFixture = mergeTests(authorFixture, articleFixture)
 export const globalFeedFixture = mergeTests(articleFixture, favoritesFixture)
-export const userFixture = mergeTests(usersFixture, loginFixture)
+export const userFixture = mergeTests(usersFixture, loginFixture, signUpFixture)
 export { expect } from "@playwright/test";

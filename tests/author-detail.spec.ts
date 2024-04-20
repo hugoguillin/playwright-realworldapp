@@ -12,13 +12,13 @@ test.describe('Author detail tests', { tag: '@author' }, () => {
     // Arrange
     const authorName = await authorDetail.visit(articleIndex)
     const authorArticles = await articlesApi.getArticlesByAuthor(authorName)
-    const titlesDisplayed = await articlesFeed.articleTitle
+    const titlesDisplayed = articlesFeed.articleTitle
 
     // Act
     const titlesText = await titlesDisplayed.allInnerTexts()
 
     // Assert
-    expect(titlesText, 'All author articles are displayed').toEqual(authorArticles.map(article => article.title))
+    expect(titlesText, 'All author articles are displayed').toEqual(authorArticles.map(article => article.title.trim()))
   });
 
   test('Should display favorited articles', async ({ page, authorDetail, articlesFeed }) => {

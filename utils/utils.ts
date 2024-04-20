@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { NewUser, NewArticle, UserSettings } from "../types";
+import { User, NewArticle, UserSettings } from "../types";
 
 export default class Utils {
   public static getToken(): string {
@@ -26,7 +26,7 @@ export default class Utils {
     }
   }
 
-  public static generateNewUserData(): NewUser {
+  public static generateNewUserData(): User {
     return {
       user: {
         username: `${faker.internet.userName()}`,
