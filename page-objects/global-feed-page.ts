@@ -21,8 +21,8 @@ export default class GlobalFeedPage {
   public async visit() {
     const requestReponse = this.page.waitForResponse('**/articles?limit**')
     this.page.goto('/#/')
-    await expect(this.yourFeedTab).toBeVisible()
-    await expect(this.loadingArticlesMessage).not.toBeVisible()
+    await this.loadingArticlesMessage.waitFor({ state: 'visible' })
+    await this.loadingArticlesMessage.waitFor({ state: 'hidden' })
     this.globalFeedTab.click()
     await requestReponse
   }

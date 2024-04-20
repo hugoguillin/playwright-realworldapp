@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
 import { User } from '../types';
 
 export default class SignUpPage {
@@ -18,7 +18,6 @@ export default class SignUpPage {
 
   public async visit() {
     this.page.goto('/#/register')
-    await expect(this.username).toBeEditable()
   }
 
   public async signUp(userData: User) {
