@@ -20,7 +20,6 @@ export default class NewArticlePage {
 
   public async visit() {
     this.page.goto('/#/editor')
-    await expect(this.articleTitle).toBeEditable()
   }
 
   public async fillForm(newArticle: NewArticle) {
@@ -31,6 +30,7 @@ export default class NewArticlePage {
     if (newArticle.article.tagList) {
       await this.articleTags.fill(newArticle.article.tagList[0] + ' ' + newArticle.article.tagList[1])
     }
+    this.page.waitForTimeout(200)
     await this.publishButton.click()
   }
 }

@@ -1,45 +1,48 @@
 import { expect, globalFeedFixture as test } from "./fixtures/main-fixture";
 import Utils from "../utils/utils";
 
-test.beforeAll(async ({ articlesApi }) => {
-  for (let i = 0; i < 10; i++) {
-    let newArticle = Utils.generateNewArticleData();
-    await articlesApi.createNewArticle(newArticle);
-  }
-});
+test.describe("Tags tests", { tag: "@tags" }, () => {
 
-test.beforeEach(async ({ globalFeed }) => {
-  await globalFeed.visit();
-});
+  test.beforeAll(async ({ articlesApi }) => {
+    for (let i = 0; i < 10; i++) {
+      let newArticle = Utils.generateNewArticleData();
+      await articlesApi.createNewArticle(newArticle);
+    }
+  });
 
-test("Should display all popular tags", async ({ tagPage, tagsApi }) => {
-  // Arrange
-  const tagsFront = await tagPage.getPopularTags();
-  let tagsBack = (await tagsApi.getPopularTags()).tags;
-  // Only the first 50 tags are displayed on the page
-  if (tagsBack.length > 50) {
-    tagsBack = tagsBack.slice(0, 50);
-  }
+  test.beforeEach(async ({ globalFeed }) => {
+    await globalFeed.visit();
+  });
 
-  // Assert
-  expect(tagsFront, "Popular tags displayed").toEqual(tagsBack);
-});
+  test("Should display all popular tags", async ({ tagPage, tagsApi }) => {
+    // Arrange
+    const tagsFront = await tagPage.getPopularTags();
+    let tagsBack = (await tagsApi.getPopularTags()).tags;
+    // Only the first 50 tags are displayed on the page
+    if (tagsBack.length > 50) {
+      tagsBack = tagsBack.slice(0, 50);
+    }
 
-test("Should filter articles by tag", async ({ tagPage, page, articlesFeed, articlesApi }) => {
-  // Arrange
-  const getArticlesByTag = page.waitForResponse("**/articles?tag=*");
-  const tag = await tagPage.getRandomTag();
+    // Assert
+    expect(tagsFront, "Popular tags displayed").toEqual(tagsBack);
+  });
 
-  // Act
-  await tagPage.filterByTag(tag);
-  await getArticlesByTag;
+  test("Should filter articles by tag", async ({ tagPage, page, articlesFeed, articlesApi }) => {
+    // Arrange
+    const getArticlesByTag = page.waitForResponse("**/articles?tag=*");
+    const tag = await tagPage.getRandomTag();
 
-  // Assert
-  const currentTag = await tagPage.getTagTab();
-  await expect(currentTag).toHaveText(tag);
+    // Act
+    await tagPage.filterByTag(tag);
+    await getArticlesByTag;
 
-  const articles = articlesFeed.articleTitle
-  const titlesText = await articles.allInnerTexts()
-  const articlesBack = await articlesApi.getArticlesByTag(tag);
-  expect(titlesText, "Article titles").toEqual(articlesBack.map((article) => article.title));
+    // Assert
+    const currentTag = await tagPage.getTagTab();
+    await expect(currentTag).toHaveText(tag);
+
+    const articles = articlesFeed.articleTitle
+    const titlesText = await articles.allInnerTexts()
+    const articlesBack = await articlesApi.getArticlesByTag(tag);
+    expect(titlesText, "Article titles").toEqual(articlesBack.map((article) => article.title));
+  });
 });
