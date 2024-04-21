@@ -1,3 +1,16 @@
+export interface Article {
+  slug: string
+  title: string
+  description: string
+  body: string
+  createdAt: string
+  updatedAt: string
+  tagList: string[]
+  author: Author
+  favorited: boolean
+  favoritesCount: number
+}
+
 export interface NewArticle {
   article: {
     title: string
@@ -5,6 +18,14 @@ export interface NewArticle {
     body: string
     tagList: string[]
   }
+}
+
+export interface Author {
+  username: string
+  bio: string
+  image: string
+  following: boolean
+  followersCount: number
 }
 
 export interface UserProfile {
@@ -31,4 +52,8 @@ export interface UserSettings {
   bio: string
   email: string
   password: string
+}
+
+export interface Tag {
+  tags: string[]
 }
