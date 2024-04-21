@@ -27,9 +27,10 @@ export default class NewArticlePage {
     await this.articleTitle.fill(newArticle.article.title)
     await this.articleDescription.fill(newArticle.article.description)
     await this.articleBody.fill(newArticle.article.body)
-    newArticle.article.tagList.forEach((tag) => {
-      this.articleTags.fill(tag + ' ')
-    })
+    // Tag input expects tags to be separated by space. Can't use for loop because of async nature of fill, meaning that each iteration would overwrite the previous one
+    if (newArticle.article.tagList) {
+      await this.articleTags.fill(newArticle.article.tagList[0] + ' ' + newArticle.article.tagList[1])
+    }
     await this.publishButton.click()
   }
 }

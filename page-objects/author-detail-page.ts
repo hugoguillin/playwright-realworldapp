@@ -2,6 +2,8 @@ import { expect, APIRequestContext, type Page } from '@playwright/test';
 import ArticlesApi from '../api/articles-api'
 import ArticlesFeedPage from './common/articles-feed-page';
 
+const testUsername = process.env.RWAPP_USERNAME
+
 export default class AuthorDetailPage {
   readonly page: Page
   readonly articlesApi: ArticlesApi
@@ -14,7 +16,7 @@ export default class AuthorDetailPage {
   }
 
   public async visit(index: number = 0) {
-    const articles = await this.articlesApi.getArticles(index + 1)
+    const articles = (await this.articlesApi.getArticles(index + 1)).filter(article => article.author.username !== testUsername)
     const authorName = articles[index].author.username
     const encodedAuthorName = encodeURIComponent(authorName)
     this.page.goto(`/#/profile/${encodedAuthorName}`)

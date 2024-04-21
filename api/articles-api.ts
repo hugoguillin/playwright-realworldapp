@@ -15,7 +15,7 @@ export default class ArticlesApi {
    * @param limit Number of articles to return
    * @returns An array of articles
    */
-  public async getArticles(limit: number = 10) {
+  public async getArticles(limit: number = 10): Promise<Article[]> {
     const response = await this.request.get(`${url}/articles?limit=${limit}`)
     await expect(response).toBeOK()
     const body = await response.json()
