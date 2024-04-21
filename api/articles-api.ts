@@ -1,5 +1,5 @@
 import { expect, APIRequestContext } from "@playwright/test"
-import { NewArticle } from "../types"
+import { Article, NewArticle } from "../types"
 
 const url = process.env.API_URL
 
@@ -27,7 +27,7 @@ export default class ArticlesApi {
    * @param authorName The author's username
    * @returns An array of articles
    */
-  public async getArticlesByAuthor(authorName: string, limit: number = 10) {
+  public async getArticlesByAuthor(authorName: string, limit: number = 10): Promise<Article[]> {
     const response = await this.request.get(`${url}/articles?author=${authorName}&limit=${limit}`)
     await expect(response).toBeOK()
     const apiResponse = await response.json()
@@ -39,7 +39,7 @@ export default class ArticlesApi {
    * @param tagName The tag name
    * @returns An array of articles
    */
-  public async getArticlesByTag(tagName: string) {
+  public async getArticlesByTag(tagName: string): Promise<Article[]> {
     const response = await this.request.get(`${url}/articles?tag=${tagName}&limit=10`)
     await expect(response).toBeOK()
     const apiResponse = await response.json()

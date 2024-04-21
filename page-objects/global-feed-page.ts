@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
 import ArticlesApi from '../api/articles-api'
 import ArticlesFeedPage from './common/articles-feed-page';
 
@@ -19,11 +19,11 @@ export default class GlobalFeedPage {
   }
 
   public async visit() {
-    const requestReponse = this.page.waitForResponse('**/articles?limit**')
-    this.page.goto('/#/')
-    await this.loadingArticlesMessage.waitFor({ state: 'visible' })
-    await this.loadingArticlesMessage.waitFor({ state: 'hidden' })
-    this.globalFeedTab.click()
-    await requestReponse
+    const feedResponse = this.page.waitForResponse('**/feed?limit**')
+    await this.page.goto('/#/')
+    await feedResponse
+    const articlesResponse = this.page.waitForResponse('**/articles?limit**')
+    await this.globalFeedTab.click()
+    await articlesResponse
   }
 }
