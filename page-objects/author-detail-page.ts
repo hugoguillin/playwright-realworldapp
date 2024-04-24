@@ -17,7 +17,7 @@ export default class AuthorDetailPage {
 
   public async visit(index: number = 0) {
     const articles = (await this.articlesApi.getArticles(index + 1)).filter(article => article.author.username !== testUsername)
-    const authorName = articles[index].author.username
+    const authorName = articles[articles.length - 1].author.username
     const encodedAuthorName = encodeURIComponent(authorName)
     this.page.goto(`/#/profile/${encodedAuthorName}`)
 

@@ -19,11 +19,9 @@ export default class GlobalFeedPage {
   }
 
   public async visit() {
-    const feedResponse = this.page.waitForResponse('**/feed?limit**')
     await this.page.goto('/#/')
-    await feedResponse
-    const articlesResponse = this.page.waitForResponse('**/articles?limit**')
+    await this.page.waitForResponse('**/feed?limit**')
     await this.globalFeedTab.click()
-    await articlesResponse
+    await this.page.waitForResponse('**/articles?limit**')
   }
 }
