@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
 import { NewArticle } from '../types';
 
 export default class NewArticlePage {
@@ -26,7 +26,7 @@ export default class NewArticlePage {
     await this.articleTitle.fill(newArticle.article.title)
     await this.articleDescription.fill(newArticle.article.description)
     await this.articleBody.fill(newArticle.article.body)
-    // Tag input expects tags to be separated by space. Can't use for loop because of async nature of fill, meaning that each iteration would overwrite the previous one
+    // Tag input expects tags to be separated by space. Can't use for loop because of async nature of fill, meaning that each iteration might overwrite the previous one
     if (newArticle.article.tagList) {
       await this.articleTags.fill(newArticle.article.tagList[0] + ' ' + newArticle.article.tagList[1])
     }
