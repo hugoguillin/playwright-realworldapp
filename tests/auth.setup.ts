@@ -1,4 +1,5 @@
 import { test as setup } from '@playwright/test';
+import { mkdir } from 'fs';
 import fs from 'fs/promises';
 
 const authFile = './.auth/user.json';
@@ -39,7 +40,7 @@ setup('authenticate via api', async ({ request }) => {
     ]
   }
 
-  await fs.mkdir('./.auth');
+  await fs.access('./.auth').then(() => undefined).catch(() => fs.mkdir('./.auth'));
   await fs.writeFile(authFile, JSON.stringify(loggedUser, null, 2));
   process.env.AUTH_TOKEN = `Token ${res.user.token}`;
 });
