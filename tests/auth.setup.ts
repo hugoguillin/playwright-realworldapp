@@ -39,6 +39,6 @@ setup('authenticate via api', async ({ request }) => {
     ]
   }
 
-  await fs.writeFile(authFile, JSON.stringify(loggedUser, null, 2));
+  await fs.writeFile(authFile, JSON.stringify(loggedUser, null, 2), { flag: 'w+' });
   process.env.AUTH_TOKEN = `Token ${res.user.token}`;
 });
