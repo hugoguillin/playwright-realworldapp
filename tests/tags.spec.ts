@@ -43,6 +43,6 @@ test.describe("Tags tests", { tag: "@tags" }, () => {
     const articles = articlesFeed.articleTitle
     const titlesText = await articles.allInnerTexts()
     const articlesBack = await articlesApi.getArticlesByTag(tag);
-    expect(titlesText, "Article titles").toEqual(articlesBack.map((article) => article.title));
+    expect(titlesText, "Article titles").toEqual(articlesBack.map((article) => article.title.trim()));
   });
 });
