@@ -2,6 +2,7 @@ import { expect, APIRequestContext } from "@playwright/test"
 import ArticlesApi from "./articles-api";
 
 const url = process.env.API_URL
+const username = process.env.RWAPP_USERNAME
 
 export default class CommentsApi {
   readonly request: APIRequestContext
@@ -24,8 +25,10 @@ export default class CommentsApi {
     const slug = articlesResponse[articleIndex].slug
     const comments = await this.getArticleComments(slug)
     for (const comment of comments) {
-      const response = await this.request.delete(`${url}/articles/${slug}/comments/${comment.id}`)
-      await expect(response).toBeOK()
+      if (comment.author.username === username) {
+        const response = await this.request.delete(`${url}/articles/${slug}/comments/${comment.id}`)
+        await expect(response).toBeOK()
+      }
     }
   }
 

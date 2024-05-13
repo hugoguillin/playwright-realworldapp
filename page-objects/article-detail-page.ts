@@ -48,6 +48,10 @@ export default class ArticleDetailPage {
     this.postCommentButton.click()
   }
 
+  public async getCommentCardByText(commentText: string) {
+    return this.commentCard.filter({ hasText: commentText })
+  }
+
   public async deleteComment(commentText: string) {
     const comment = this.commentCard.filter({ hasText: commentText })
     this.page.on('dialog', dialog => dialog.accept());

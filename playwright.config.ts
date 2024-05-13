@@ -22,6 +22,7 @@ export default defineConfig({
 
     /* Collect trace on test failure to debug easier. Available from report. See https://playwright.dev/docs/trace-viewer */
     trace: 'retain-on-failure',
+    video: 'retain-on-failure',
     extraHTTPHeaders: {
       'Authorization': `${process.env.AUTH_TOKEN}`
     }

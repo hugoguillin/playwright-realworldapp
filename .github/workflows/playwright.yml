@@ -1,10 +1,10 @@
 name: Playwright Tests
 on:
   workflow_dispatch:
-  # push:
-  #   branches: [ main, master ]
-  # pull_request:
-  #   branches: [ main, master ]
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
 jobs:
   playwright-tests:
     timeout-minutes: 60
@@ -17,23 +17,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Paso 2: Iniciar contenedores con Docker Compose
-      - name: Iniciar contenedores
+      - name: Start application
         run: docker-compose up -d
 
-      # Paso 3: Esperar a que los contenedores estén listos
-      - name: Esperar a que los contenedores estén listos
+      - name: Wait for application to be ready
         run: |
           wget -O dockerize.tar.gz https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-alpine-linux-amd64-v0.7.0.tar.gz && tar -C /usr/local/bin -xzvf dockerize.tar.gz && rm dockerize.tar.gz
           dockerize -wait tcp://localhost:3000 -timeout 1m
 
-      # Paso 4: Ejecutar el script de sembrado de datos
-      - name: Ejecutar script de sembrado
+      - name: Run seed scripts
         run: docker-compose exec -T app npm run sqlz -- db:seed:all
 
-      - name: Register cypress user
+      - name: Register test user
         run: |
-          curl -X POST 'http://localhost:3000/api/users' -H 'Content-Type: application/json' -d '{"user": {"username": "cypress-user","email": "cypress@realworld.com","password": "cypress@realworld.com"}}'
+          curl -X POST 'http://localhost:3000/api/users' -H 'Content-Type: application/json' -d '{"user": {"username": "playwright-user","email": "playwright@realworld.com","password": "playwright@realworld.com"}}'
 
       - uses: actions/setup-node@v4
         with:
