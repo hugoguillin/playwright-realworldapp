@@ -30,7 +30,7 @@ export default class NewArticlePage {
     if (newArticle.article.tagList) {
       await this.articleTags.fill(newArticle.article.tagList[0] + ' ' + newArticle.article.tagList[1])
     }
-    this.page.waitForTimeout(200)
+    await this.page.waitForTimeout(200)
     await this.publishButton.click()
   }
 }

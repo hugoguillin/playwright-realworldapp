@@ -8,7 +8,7 @@ const username: string = process.env.RWAPP_USERNAME ?? ""
 test.describe.configure({ mode: 'serial' })
 
 test.describe('Article comments tests', { tag: ['@sanity', '@comments'] }, () => {
-  test('Should add a comment to an article', async ({ articleDetail, commentsApi }) => {
+  test('Should add a comment to an article', async ({ page, articleDetail, commentsApi }) => {
     // Arrange
     await commentsApi.deleteArticleComments(articleIndex)
     await articleDetail.visit()
@@ -18,9 +18,9 @@ test.describe('Article comments tests', { tag: ['@sanity', '@comments'] }, () =>
     await articleDetail.sendComment(message)
 
     // Assert
-    const commentText = articleDetail.commentText
-    await expect(commentText, 'Comment content').toHaveText(message)
-    const commentAuthor = articleDetail.commentAuthor
+    const commentText = page.getByText(message)
+    await expect(commentText, 'Comment content').toBeVisible()
+    const commentAuthor = (await articleDetail.getCommentCardByText(message)).getByTestId('author-username')
     await expect(commentAuthor, 'Comment author').toHaveText(username)
   });
 
