@@ -2,11 +2,7 @@
 
 ### Run target application
 
-Simply run `docker-compose up -d` from the root directory of this project
-
-### Project configuration
-
-Create the file `.auth/user.json` on the root of this project. This is the file where user authentication data is stored on test set up, so login can be skipped for the rest of the tests. This file is already added to .gitignore, so it will not be checked in.
+Simply run `docker-compose up -d` from the root directory of this project. This will start the target application on `http://localhost:3000`. Then, you need register a new user with the same credentials as in the `.env` file.
 
 ### Run tests
 
