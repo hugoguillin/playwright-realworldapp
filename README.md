@@ -4,9 +4,9 @@ The aim of this project is to showcase one way of creating an E2E test automatio
 ### Main features
 - **Page Object Model**: design pattern to create a clear separation between the test code and the page code.
 - **Use of [Playwright fixtures](https://playwright.dev/docs/test-fixtures)**
-- **Mock request responses** to avoid heavy test setup and to be able to test different scenarios. See [tests/author-detail.spec.ts#Should display favorited articles](./tests/author-detail.spec.ts).
+- **Mock request responses** to avoid heavy test setup and to be able to test different scenarios. See [example](./tests/author-detail.spec.ts#L24).
 - **Reuse user authentication data between tests**. See [auth.setup.ts](./tests/auth.setup.ts).
-- **Run tests in parallel in CI**. See [.github/workflows/playwright.yml](./.github/workflows/playwright.yml).
+- **Run tests in parallel in CI**. See [workflow](./.github/workflows/playwright.yml).
 
 ## How to run the tests
 ### Prerequisites
