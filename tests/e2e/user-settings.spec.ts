@@ -1,7 +1,7 @@
-import { userFixture as test, expect } from "./fixtures/main-fixture";
-import Utils from "../utils/utils";
-import { User, UserProfile, UserSettings } from "../types";
-import { UserSettingsFields } from "../page-objects/user-settings-page";
+import { userFixture as test, expect } from "../fixtures/main-fixture";
+import Utils from "../../utils/utils";
+import { User, UserProfile, UserSettings } from "../../types";
+import { UserSettingsFields } from "../../page-objects/user-settings-page";
 
 // Each of these tests need a new user, so we need to discard the previous storage
 // state and extraHTTPHeaders to start with a clean slate

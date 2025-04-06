@@ -1,4 +1,4 @@
-import { articleDetailFixture as test, expect } from './fixtures/main-fixture';
+import { articleDetailFixture as test, expect } from '../fixtures/main-fixture';
 import { faker } from "@faker-js/faker";
 
 const articleIndex = 0

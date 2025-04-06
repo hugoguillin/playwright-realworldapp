@@ -1,5 +1,5 @@
-import { userFixture as test, expect } from "./fixtures/main-fixture";
-import Utils from "../utils/utils";
+import { userFixture as test, expect } from "../fixtures/main-fixture";
+import Utils from "../../utils/utils";
 
 test.use({ storageState: { cookies: [], origins: [] }, extraHTTPHeaders: {} });
 // test.describe.configure({ mode: 'serial' })

@@ -1,6 +1,6 @@
-import { articleDetailFixture as test, expect } from './fixtures/main-fixture';
-import Utils from '../utils/utils';
-import { NewArticle } from '../types';
+import { articleDetailFixture as test, expect } from '../fixtures/main-fixture';
+import Utils from '../../utils/utils';
+import { NewArticle } from '../../types';
 import _ from 'lodash';
 
 test.describe('New article tests', { tag: ['@articles', '@sanity'] }, () => {

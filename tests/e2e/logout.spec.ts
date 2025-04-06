@@ -1,6 +1,6 @@
-import { userFixture as test, expect } from "./fixtures/main-fixture";
-import Utils from "../utils/utils";
-import { User, UserProfile, UserSettings } from "../types";
+import { userFixture as test, expect } from "../fixtures/main-fixture";
+import Utils from "../../utils/utils";
+import { User, UserProfile, UserSettings } from "../../types";
 
 test.describe('Logout tests', { tag: '@user' }, () => {
   let fieldsToUpdate: UserSettings

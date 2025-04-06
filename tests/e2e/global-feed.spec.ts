@@ -1,4 +1,4 @@
-import { expect, globalFeedFixture as test } from "./fixtures/main-fixture";
+import { expect, globalFeedFixture as test } from "../fixtures/main-fixture";
 
 test.describe('Global feed tests', { tag: '@articles' }, () => {
 

@@ -1,7 +1,7 @@
-import { expect, globalFeedFixture as test } from "./fixtures/main-fixture";
-import Utils from "../utils/utils";
+import { expect, globalFeedFixture as test } from "../fixtures/main-fixture";
+import Utils from "../../utils/utils";
 import _ from "lodash";
-import { Article } from "../types";
+import { Article } from "../../types";
 
 const username = process.env.RWAPP_USERNAME ?? ''
 

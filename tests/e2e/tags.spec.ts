@@ -1,5 +1,5 @@
-import { expect, globalFeedFixture as test } from "./fixtures/main-fixture";
-import Utils from "../utils/utils";
+import { expect, globalFeedFixture as test } from "../fixtures/main-fixture";
+import Utils from "../../utils/utils";
 
 test.describe("Tags tests", { tag: "@tags" }, () => {
 

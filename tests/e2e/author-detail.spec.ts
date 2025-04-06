@@ -1,4 +1,4 @@
-import { authorDetailFixture as test, expect } from "./fixtures/main-fixture";
+import { authorDetailFixture as test, expect } from "../fixtures/main-fixture";
 import fs from 'fs';
 import _ from 'lodash'
 

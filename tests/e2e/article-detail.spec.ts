@@ -1,5 +1,5 @@
-import { articleDetailFixture as test, expect } from './fixtures/main-fixture';
-import Utils from '../utils/utils';
+import { articleDetailFixture as test, expect } from '../fixtures/main-fixture';
+import Utils from '../../utils/utils';
 
 const username: string = process.env.RWAPP_USERNAME ?? ""
 
