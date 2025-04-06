@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import ArticlesApi from '../../api/articles-api';
+import ArticlesApi from '../../api-clients/articles-api';
 import ArticleDetailPage from '../../page-objects/article-detail-page';
 import ArticlesFeedPage from '../../page-objects/common/articles-feed-page';
 import GlobalFeedPage from '../../page-objects/global-feed-page';

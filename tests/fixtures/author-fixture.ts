@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import AuthorApi from '../../api/author-api';
+import AuthorApi from '../../api-clients/author-api';
 import AuthorDetailPage from '../../page-objects/author-detail-page';
 import FollowAuthorPage from '../../page-objects/common/follow-author-page';
 
