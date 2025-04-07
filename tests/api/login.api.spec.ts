@@ -50,4 +50,23 @@ test.describe('Login API', { tag: '@api' }, () => {
     expect(responseBody.errors).toBeDefined();
     expect(responseBody.errors.body).toContain("Wrong email/password combination");
   });
+
+  test('Login with non-existent user', async ({ request }) => {
+    // Send POST request to login endpoint with non-existent email
+    const response = await request.post(apiUrl, {
+      data: {
+        user: {
+          email: 'nonexistent-user@example.com',
+          password: 'any-password'
+        }
+      }
+    });
+
+    expect(response.status()).toBe(404);
+
+    // Parse response body and verify error message
+    const responseBody = await response.json();
+    expect(responseBody.errors).toBeDefined();
+    expect(responseBody.errors.body).toContain("Email not found sign in first")
+  });
 });
