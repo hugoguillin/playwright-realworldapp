@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Login API', () => {
-  const apiUrl = '/api/users/login';
+test.describe('Login API', { tag: '@api' }, () => {
+  const apiUrl = `${process.env.API_URL}/users/login`;
   const username = process.env.RWAPP_USERNAME;
   const email = process.env.RWAPP_USER_EMAIL;
   const password = process.env.RWAPP_USER_PASSWORD;
@@ -31,5 +31,23 @@ test.describe('Login API', () => {
     expect(responseBody.user.token).toBeDefined();
     expect(typeof responseBody.user.token).toBe('string');
     expect(responseBody.user.token.length).toBeGreaterThan(0);
+  });
+
+  test('Login with incorrect password', async ({ request }) => {
+    // Send POST request to login endpoint
+    const response = await request.post(apiUrl, {
+      data: {
+        user: {
+          email,
+          password: 'incorrect-password'
+        }
+      }
+    });
+
+    expect(response.status()).toBe(422);
+
+    const responseBody = await response.json();
+    expect(responseBody.errors).toBeDefined();
+    expect(responseBody.errors.body).toContain("Wrong email/password combination");
   });
 });
