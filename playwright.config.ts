@@ -32,14 +32,24 @@ export default defineConfig({
     // Setup project
     { name: 'setup', testMatch: /.*\.setup\.ts/ },
 
+    // E2E tests - with auth dependency
     {
-      name: 'chromium',
+      name: 'e2e',
+      testMatch: /.*\.e2e\.spec\.ts/,
       use: {
         ...devices['Desktop Chrome'],
-        // Use prepared auth state.
         storageState: './.auth/user.json',
       },
       dependencies: ['setup'],
+    },
+
+    // API tests - no auth dependency
+    {
+      name: 'api',
+      testMatch: /.*\.api\.spec\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+      },
     },
 
     // {
