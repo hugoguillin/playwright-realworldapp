@@ -7,7 +7,6 @@ test.describe('Login API', { tag: '@api' }, () => {
   const password = process.env.RWAPP_USER_PASSWORD;
 
   test('Login with valid credentials', async ({ request }) => {
-    // Send POST request to login endpoint
     const response = await request.post(apiUrl, {
       data: {
         user: {
@@ -17,24 +16,18 @@ test.describe('Login API', { tag: '@api' }, () => {
       }
     });
 
-    // Verify response status is 200 OK
     expect(response.status()).toBe(200);
 
-    // Parse response body
     const responseBody = await response.json();
 
-    // Verify response contains user details
     expect(responseBody.user).toBeDefined();
     expect(responseBody.user.username).toBe(username);
-
-    // Verify response contains JWT token
     expect(responseBody.user.token).toBeDefined();
     expect(typeof responseBody.user.token).toBe('string');
     expect(responseBody.user.token.length).toBeGreaterThan(0);
   });
 
   test('Login with incorrect password', async ({ request }) => {
-    // Send POST request to login endpoint
     const response = await request.post(apiUrl, {
       data: {
         user: {
@@ -52,7 +45,6 @@ test.describe('Login API', { tag: '@api' }, () => {
   });
 
   test('Login with non-existent user', async ({ request }) => {
-    // Send POST request to login endpoint with non-existent email
     const response = await request.post(apiUrl, {
       data: {
         user: {
@@ -63,10 +55,36 @@ test.describe('Login API', { tag: '@api' }, () => {
     });
 
     expect(response.status()).toBe(404);
-
-    // Parse response body and verify error message
     const responseBody = await response.json();
     expect(responseBody.errors).toBeDefined();
     expect(responseBody.errors.body).toContain("Email not found sign in first")
+  });
+
+  test('Login with missing email or password', async ({ request }) => {
+    // Test with missing email
+    const responseWithoutEmail = await request.post(apiUrl, {
+      data: {
+        user: {
+          password: 'any-password'
+        }
+      }
+    });
+
+    expect(responseWithoutEmail.status()).toBe(422);
+    const responseBodyWithoutEmail = await responseWithoutEmail.json();
+    expect(responseBodyWithoutEmail.errors.body).toContain("Email is required")
+
+    // Test with missing password
+    const responseWithoutPassword = await request.post(apiUrl, {
+      data: {
+        user: {
+          email: 'test@example.com'
+        }
+      }
+    });
+
+    expect(responseWithoutPassword.status()).toBe(422);
+    const responseBodyWithoutPassword = await responseWithoutPassword.json();
+    expect(responseBodyWithoutPassword.errors.body).toContain("Password is required")
   });
 });
