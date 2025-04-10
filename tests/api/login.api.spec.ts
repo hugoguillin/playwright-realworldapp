@@ -140,4 +140,19 @@ test.describe('Login API', { tag: '@api' }, () => {
       }
     });
   });
+
+  test('Attempt login with SQL injection attempt', async ({ request }) => {
+    const response = await request.post(apiUrl, {
+      data: {
+        user: {
+          email,
+          password: "' OR '1'='1"
+        }
+      }
+    });
+
+    expect(response.status()).toBe(422);
+    const responseBody = await response.json();
+    expect(responseBody.errors.body).toContain("Wrong email/password combination");
+  });
 });
