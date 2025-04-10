@@ -102,4 +102,42 @@ test.describe('Login API', { tag: '@api' }, () => {
     const responseBody = await response.json();
     expect(responseBody.errors.body).toContain("Invalid email format");
   });
+
+  test('Verify JWT token structure on login', async ({ request }) => {
+    const response = await request.post(apiUrl, {
+      data: {
+        user: {
+          email,
+          password
+        }
+      }
+    });
+
+    expect(response.status()).toBe(200);
+    const responseBody = await response.json();
+
+    const token = responseBody.user.token;
+    expect(token).toBeDefined();
+
+    // Verify token follows JWT format (three parts separated by periods)
+    const tokenParts = token.split('.');
+    expect(tokenParts.length).toBe(3);
+
+    // Verify each part is base64 encoded (can be decoded)
+    tokenParts.forEach((part, index) => {
+      // The signature part (index 2) might contain non-base64 URL safe characters
+      if (index < 2) {
+        try {
+          const decoded = Buffer.from(part, 'base64').toString();
+          expect(decoded.length).toBeGreaterThan(0);
+
+          // Header and payload should be valid JSON
+          const parsedJson = JSON.parse(decoded);
+          expect(parsedJson).toBeTruthy();
+        } catch (e) {
+          expect(e).toBeNull(); // This will fail the test if decoding fails
+        }
+      }
+    });
+  });
 });
