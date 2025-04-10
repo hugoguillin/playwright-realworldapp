@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import TagsApi from '../../api/tags-api';
+import TagsApi from '../../api-clients/tags-api';
 import TagPage from '../../page-objects/tag-page';
 
 type TagFixture = {

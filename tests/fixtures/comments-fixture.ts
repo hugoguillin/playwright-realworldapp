@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import CommentsApi from '../../api/comments-api';
+import CommentsApi from '../../api-clients/comments-api';
 
 type CommentsFixture = {
   commentsApi: CommentsApi

@@ -1,5 +1,5 @@
 import { expect, APIRequestContext, type Page } from '@playwright/test';
-import ArticlesApi from '../api/articles-api'
+import ArticlesApi from '../api-clients/articles-api'
 import ArticlesFeedPage from './common/articles-feed-page';
 
 const testUsername = process.env.RWAPP_USERNAME

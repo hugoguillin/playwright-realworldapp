@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import FavoritesApi from '../../api/favorites-api';
+import FavoritesApi from '../../api-clients/favorites-api';
 import FavoritesPage from '../../page-objects/common/favorites-page';
 
 type FavoritesFixture = {

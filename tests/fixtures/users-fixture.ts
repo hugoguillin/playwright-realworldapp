@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import UsersApi from '../../api/users-api';
+import UsersApi from '../../api-clients/users-api';
 import UserSettingsPage from '../../page-objects/user-settings-page';
 
 type UserFixture = {
