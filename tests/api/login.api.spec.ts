@@ -87,4 +87,19 @@ test.describe('Login API', { tag: '@api' }, () => {
     const responseBodyWithoutPassword = await responseWithoutPassword.json();
     expect(responseBodyWithoutPassword.errors.body).toContain("Password is required")
   });
+
+  test('Login with invalid email format', async ({ request }) => {
+    const response = await request.post(apiUrl, {
+      data: {
+        user: {
+          email: 'invalid-email-format',
+          password: 'any-password'
+        }
+      }
+    });
+
+    expect(response.status()).toBe(422);
+    const responseBody = await response.json();
+    expect(responseBody.errors.body).toContain("Invalid email format");
+  });
 });
