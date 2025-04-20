@@ -22,9 +22,6 @@ export default defineConfig({
 
     /* Collect trace on test failure to debug easier. Available from report. See https://playwright.dev/docs/trace-viewer */
     trace: 'retain-on-failure',
-    extraHTTPHeaders: {
-      'Authorization': `${process.env.AUTH_TOKEN}`
-    }
   },
 
   /* Configure projects for major browsers */
@@ -32,14 +29,27 @@ export default defineConfig({
     // Setup project
     { name: 'setup', testMatch: /.*\.setup\.ts/ },
 
+    // E2E tests - with auth dependency
     {
-      name: 'chromium',
+      name: 'e2e',
+      testMatch: /.*\.e2e\.spec\.ts/,
       use: {
         ...devices['Desktop Chrome'],
-        // Use prepared auth state.
         storageState: './.auth/user.json',
+        extraHTTPHeaders: {
+          'Authorization': `${process.env.AUTH_TOKEN}`
+        }
       },
       dependencies: ['setup'],
+    },
+
+    // API tests - no auth dependency
+    {
+      name: 'api',
+      testMatch: /.*\.api\.spec\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+      },
     },
 
     // {

@@ -1,5 +1,5 @@
 import { APIRequestContext, expect, type Locator, type Page } from '@playwright/test';
-import TagsApi from '../api/tags-api'
+import TagsApi from '../api-clients/tags-api'
 import _ from 'lodash'
 
 export default class TagPage {

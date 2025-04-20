@@ -1,5 +1,5 @@
 import { type Locator, type Page } from '@playwright/test';
-import ArticlesApi from '../api/articles-api'
+import ArticlesApi from '../api-clients/articles-api'
 import ArticlesFeedPage from './common/articles-feed-page';
 
 export default class GlobalFeedPage {
